@@ -1,0 +1,171 @@
+@import "theme.css";
+
+* {
+	all: initial; /* Reset GTK theme */
+	color: @main-fg;
+}
+
+@import "styles/fonts.css";
+@import "styles/modules-center.css";
+@import "styles/modules-left.css";
+@import "styles/modules-right.css";
+@import "styles/states.css";
+
+.module {
+	margin-bottom: -1px;
+}
+
+#waybar {
+	background-color: @outline;
+}
+#waybar > box {
+	margin: 4px;
+	background-color: @main-bg;
+}
+
+button {
+	border-radius: 16px;
+	min-width: 16px;
+	padding: 0 10px;
+}
+button:hover {
+	background-color: @hover-bg;
+	color: @hover-fg;
+}
+
+tooltip {
+	border: 2px solid @main-br;
+	border-radius: 10px;
+	background-color: @main-bg;
+}
+tooltip > box {
+	padding: 0 6px;
+}
+
+#custom-distro {
+    font-size: 25px; /* İkonun büyüklüğünü buradan ayarlayabilirsin */
+}
+
+/* Takvimin arka planını ve genel kutusunu belirle */
+tooltip {
+    background: rgba(24, 24, 37, 0.9); /* Ana koyu arka plan */
+    border: 2px solid @lavender;      /* Senin Lavanta rengin */
+    border-radius: 12px;
+}
+
+tooltip label {
+    font-family: "CommitMono Nerd Font";
+    font-size: 16px;
+    color: @text; /* Altın-Beyaz rengin */
+    padding: 15px;
+}
+
+/* Takvim içindeki özel renkleri sabitle */
+#calendar {
+    padding: 10px;
+}
+
+#calendar .header {
+    color: @yellow; /* Altın rengin */
+}
+
+#calendar .today {
+    background-color: @lavender;
+    color: #11111b;
+    border-radius: 5px;
+}
+
+/* Çekmece kapalıyken tray içeriğini gizle (Display yerine Opacity ve Boyut) */
+#group-drawer tray {
+    opacity: 0;
+    margin: 0;
+    padding: 0;
+    min-width: 0;
+    min-height: 0;
+}
+
+/* Çekmece açıldığında (hover) tray'i görünür yap */
+#group-drawer:hover tray {
+    opacity: 1;
+    margin: 0 6px;
+    padding: 0 4px;
+}
+
+/* Blueman ikonunu tamamen görünmez yapmak ve yer kaplamasını engellemek için */
+#tray > .blueman, 
+#tray > .blueman-applet {
+    opacity: 0;
+    margin-right: -20px; /* Onu sola doğru kaydırıp alanını daraltıyoruz */
+}
+
+/* Kendi MSI ikonun için stil */
+#custom-msi-icon {
+    color: @lavender-l;
+    margin-right: 5px;
+    padding: 0 10px;
+    font-size: 16px;
+}
+/*----------------------------------------------------------
+    Tray sağ tık menüleri
+    En üstteki "* { all: initial; }" GTK temasını sıfırladığı
+    için menülerin arka planı yoktu; burada yeniden çiziliyor.
+----------------------------------------------------------*/
+
+menu {
+	background-color: rgba(24, 24, 37, 0.95);
+	border: 2px solid @lavender;
+	border-radius: 12px;
+	padding: 6px;
+}
+
+menuitem {
+	padding: 6px 12px;
+	border-radius: 8px;
+}
+menuitem label {
+	font-family: "CommitMono Nerd Font";
+	font-weight: normal;
+	font-size: 14px;
+	color: @text;
+}
+menuitem:hover {
+	background-color: @lavender;
+}
+menuitem:hover label {
+	color: @yellow;
+}
+menuitem:disabled label {
+	color: @overlay0;
+}
+
+/* Alt menü oku ve onay kutuları (all: initial simgelerini de siliyor) */
+menuitem arrow {
+	min-width: 14px;
+	min-height: 14px;
+	margin-left: 8px;
+	-gtk-icon-source: -gtk-icontheme("pan-end-symbolic");
+	color: @lavender-l;
+}
+menuitem check,
+menuitem radio {
+	min-width: 14px;
+	min-height: 14px;
+	margin-right: 8px;
+	border: 1px solid @lavender-l;
+	border-radius: 4px;
+}
+menuitem radio {
+	border-radius: 999px;
+}
+menuitem check:checked,
+menuitem radio:checked {
+	background-color: @lavender-l;
+	-gtk-icon-source: -gtk-icontheme("object-select-symbolic");
+	color: @crust;
+}
+
+menu separator {
+	min-height: 1px;
+	margin: 4px 8px;
+	background-color: @surface1;
+}

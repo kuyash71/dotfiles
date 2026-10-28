@@ -1,0 +1,54 @@
+/*----------------
+    Media info
+----------------*/
+
+#mpris {
+	padding: 0 12px;
+}
+
+/*------------
+    Volume
+------------*/
+
+#custom-left_div.6 {
+	color: @volume;
+}
+#pulseaudio,
+#wireplumber {
+	background-color: @volume;
+}
+
+/*-------------
+    Battery
+-------------*/
+
+#custom-left_div.8 {
+	background-color: @volume;
+	color: @battery;
+}
+#battery {
+	background-color: @battery;
+}
+#custom-left_inv.2 {
+	color: @battery;
+}
+
+/*----------------
+    Power menu
+----------------*/
+
+#custom-power {
+	border-radius: 16px;
+	padding: 0 19px 0 16px;
+	color: @accent;
+}
+#custom-power:hover {
+	background-color: @hover-bg;
+}
+/* Bildirim varsa güneşteki altın renge geç */
+#custom-power.notification,
+#custom-power.dnd-notification,
+#custom-power.inhibited-notification,
+#custom-power.dnd-inhibited-notification {
+	color: @yellow;
+}

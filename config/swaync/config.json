@@ -1,0 +1,184 @@
+{
+  "$schema": "/etc/xdg/swaync/configSchema.json",
+  "ignore-gtk-theme": true,
+  "positionX": "right",
+  "positionY": "top",
+  "control-center-positionX": "right",
+  "control-center-positionY": "top",
+  "layer": "overlay",
+  "control-center-layer": "overlay",
+  "layer-shell": true,
+  "layer-shell-cover-screen": true,
+  "cssPriority": "user",
+  "control-center-margin-top": 83,
+  "control-center-margin-bottom": 83,
+  "control-center-margin-right": 14,
+  "control-center-margin-left": 0,
+  "notification-2fa-action": true,
+  "notification-inline-replies": false,
+  "notification-body-image-height": 100,
+  "notification-body-image-width": 200,
+  "timeout": 6,
+  "timeout-low": 3,
+  "timeout-critical": 0,
+  "fit-to-screen": true,
+  "relative-timestamps": true,
+  "control-center-width": 572,
+  "control-center-height": 663,
+  "notification-window-width": 400,
+  "keyboard-shortcuts": true,
+  "notification-grouping": true,
+  "image-visibility": "when-available",
+  "transition-time": 200,
+  "hide-on-clear": false,
+  "hide-on-action": true,
+  "text-empty": "Bildirim yok",
+  "script-fail-notify": true,
+  "widgets": [
+    "label#host",
+    "label#user",
+    "label#subtitle",
+    "buttons-grid#power",
+    "buttons-grid#toggles",
+    "backlight",
+    "buttons-grid#apps",
+    "buttons-grid#mvd",
+    "mpris",
+    "volume",
+    "buttons-grid#volgear",
+    "title",
+    "notifications"
+  ],
+  "widget-config": {
+    "label#host": {
+      "text": "󰖙 kvara",
+      "max-lines": 1
+    },
+    "label#user": {
+      "text": "󰀄 kuyash",
+      "max-lines": 1
+    },
+    "label#subtitle": {
+      "text": "Control Panel",
+      "max-lines": 1
+    },
+    "buttons-grid#power": {
+      "buttons-per-row": 5,
+      "actions": [
+        {
+          "label": "󰌾",
+          "command": "sh -c 'setsid -f $HOME/.config/swaync/scripts/power.sh lock'"
+        },
+        {
+          "label": "󰤄",
+          "command": "sh -c 'setsid -f $HOME/.config/swaync/scripts/power.sh suspend'"
+        },
+        {
+          "label": "󰍃",
+          "command": "sh -c 'setsid -f $HOME/.config/swaync/scripts/power.sh logout'"
+        },
+        {
+          "label": "󰜉",
+          "command": "sh -c 'setsid -f $HOME/.config/swaync/scripts/power.sh reboot'"
+        },
+        {
+          "label": "󰐥",
+          "command": "sh -c 'setsid -f $HOME/.config/swaync/scripts/power.sh poweroff'"
+        }
+      ]
+    },
+    "buttons-grid#toggles": {
+      "buttons-per-row": 4,
+      "actions": [
+        {
+          "label": "󰖩",
+          "type": "toggle",
+          "active": true,
+          "command": "sh -c '$HOME/.config/swaync/scripts/toggle.sh wifi set'",
+          "update-command": "sh -c '$HOME/.config/swaync/scripts/toggle.sh wifi get'"
+        },
+        {
+          "label": "󰂯",
+          "type": "toggle",
+          "active": true,
+          "command": "sh -c '$HOME/.config/swaync/scripts/toggle.sh bt set'",
+          "update-command": "sh -c '$HOME/.config/swaync/scripts/toggle.sh bt get'"
+        },
+        {
+          "label": "󰂛",
+          "type": "toggle",
+          "active": false,
+          "command": "sh -c '$HOME/.config/swaync/scripts/toggle.sh dnd set'",
+          "update-command": "sh -c '$HOME/.config/swaync/scripts/toggle.sh dnd get'"
+        },
+        {
+          "label": "󰹑",
+          "command": "sh -c 'swaync-client -cp; sleep 0.4; setsid -f hyprshot -m region'"
+        }
+      ]
+    },
+    "backlight": {
+      "label": "󰃟",
+      "device": "nvidia_0"
+    },
+    "buttons-grid#apps": {
+      "buttons-per-row": 3,
+      "actions": [
+        {
+          "label": "󰦝  Mullvad",
+          "type": "toggle",
+          "command": "sh -c 'setsid -f $HOME/.config/swaync/scripts/mullvad.sh toggle'",
+          "update-command": "sh -c '$HOME/.config/swaync/scripts/mullvad.sh update'"
+        },
+        {
+          "label": "󰌢  MSI Center",
+          "command": "sh -c 'swaync-client -cp; $HOME/.config/swaync/scripts/mcontrolcenter.sh'"
+        },
+        {
+          "label": "󰍽  Razer",
+          "command": "sh -c 'swaync-client -cp; setsid -f polychromatic-controller'"
+        }
+      ]
+    },
+    "buttons-grid#mvd": {
+      "buttons-per-row": 1,
+      "actions": [
+        {
+          "label": "󰐥",
+          "type": "toggle",
+          "command": "sh -c 'setsid -f $HOME/.config/swaync/scripts/mullvad.sh daemon'",
+          "update-command": "sh -c '$HOME/.config/swaync/scripts/mullvad.sh daemon-state'"
+        }
+      ]
+    },
+    "mpris": {
+      "blacklist": [
+        "playerctld"
+      ],
+      "autohide": true,
+      "show-album-art": "when-available",
+      "loop-carousel": true
+    },
+    "volume": {
+      "label": "󰕾",
+      "show-per-app": false
+    },
+    "buttons-grid#volgear": {
+      "buttons-per-row": 1,
+      "actions": [
+        {
+          "label": "󰒓",
+          "command": "sh -c 'swaync-client -cp; setsid -f pavucontrol'"
+        }
+      ]
+    },
+    "title": {
+      "text": "NOTIFICATIONS",
+      "clear-all-button": true,
+      "button-text": "CLEAR"
+    },
+    "notifications": {
+      "vexpand": true
+    }
+  }
+}

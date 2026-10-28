@@ -1,0 +1,58 @@
+/* SwayOSD — kvara Control Panel ile aynı lavanta & altın tema */
+window#osd {
+  border-radius: 18px;
+  border: 2px solid #63537a;
+  /* Blur yok: GTK blur alanını dikdörtgen bildirdiği için yuvarlak
+     köşelerin dışında koyu bir kutu görünüyordu. Gösterge kısa süreli,
+     opak zemin yeterli. */
+  background: rgba(17, 17, 27, 0.88);
+}
+window#osd #container {
+  margin: 14px 20px;
+}
+window#osd image {
+  color: #e5c283;
+  -gtk-icon-size: 22px;
+  margin-right: 6px;
+}
+window#osd label {
+  color: #FFF8E7;
+  font-family: "CommitMono Nerd Font";
+  font-size: 14px;
+  font-weight: bold;
+  min-width: 40px;
+  margin-left: 8px;
+}
+window#osd progressbar,
+window#osd segmentedprogress {
+  min-height: 8px;
+  min-width: 260px;
+  border-radius: 999px;
+  background: transparent;
+  border: none;
+}
+window#osd trough,
+window#osd segment {
+  min-height: inherit;
+  border-radius: inherit;
+  border: none;
+  background: #313244;
+}
+window#osd progress,
+window#osd segment.active {
+  min-height: inherit;
+  border-radius: inherit;
+  border: none;
+  background: linear-gradient(90deg, #957fb8, #e5c283);
+}
+window#osd segment {
+  margin-left: 6px;
+}
+window#osd segment:first-child {
+  margin-left: 0;
+}
+/* Sessize alınmış / kapalı durum */
+window#osd progressbar:disabled,
+window#osd image:disabled {
+  opacity: 0.45;
+}

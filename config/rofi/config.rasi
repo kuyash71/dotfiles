@@ -1,0 +1,90 @@
+configuration {
+    show-icons: true;
+    display-drun: " ";
+    drun-display-format: "{icon} {name}";
+    font: "sans-serif 12";
+}
+
+* {
+    /* Yeni LAVENDER arkaplan (149, 127, 184) - %60 Saydam */
+    bg-color: rgba(99, 83, 122, 0.6);
+    
+    /* Seçili öğe için aynı LAVENDER'ın biraz daha opak hali */
+    bg-selected: rgba(88, 76, 110, 0.9);
+    
+    /* Yeni GOLD metin rengi (#E5C283) */
+    fg-color: #E5C283;
+    
+    /* Arama çubuğu için çok hafif saydam beyaz arka plan */
+    input-bg: rgba(255, 255, 255, 0.15);
+
+    background-color: transparent;
+    text-color: @fg-color;
+}
+
+window {
+    width: 35%;
+    border-radius: 15px;
+    background-color: @bg-color;
+    /* İnce GOLD çerçeve */
+    border: 2px solid;
+    border-color: @fg-color;
+    padding: 20px;
+}
+
+mainbox {
+    spacing: 15px;
+}
+
+inputbar {
+    background-color: @input-bg;
+    border-radius: 10px;
+    padding: 12px;
+    children: [ prompt, entry ];
+}
+
+prompt {
+    text-color: @fg-color;
+    margin: 0px 10px 0px 0px;
+}
+
+entry {
+    placeholder: "Uygulama ara...";
+    /* Yarı saydam GOLD (229, 194, 131) */
+    placeholder-color: rgba(229, 194, 131, 0.5); 
+    text-color: @fg-color;
+}
+
+listview {
+    lines: 7;
+    spacing: 5px;
+    scrollbar: false;
+    border: 0px;
+}
+
+element {
+    padding: 10px;
+    border-radius: 8px;
+}
+
+element normal.normal, element alternate.normal {
+    background-color: transparent;
+    text-color: @fg-color;
+}
+
+element selected.normal {
+    background-color: @bg-selected;
+    /* Seçiliyken okunabilirliği artırmak için metin tam beyaz kalıyor */
+    text-color: #FFFFFF; 
+}
+
+element-text, element-icon {
+    background-color: transparent;
+    text-color: inherit;
+    vertical-align: 0.5;
+}
+
+element-icon {
+    size: 28px;
+    margin: 0px 15px 0px 0px;
+}

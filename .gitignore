@@ -1,0 +1,7 @@
+# Yedek dosyalar
+*.bak
+*.bak-*
+
+# Kişisel / makineye özel
+config/fish/fish_variables
+config/hypr/wallpapers 

@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+# SAURO Clean Update Script - 2026 Edition
+# Gereksiz döngülerden arındırılmış, sadece tıklandığında veya 
+# belirlenen aralıkta (interval) çalışan temiz versiyon.
+
+# Renkler ve Ayarlar
+FG_BLUE="\e[34m"
+FG_RESET="\e[39m"
+
+check_counts() {
+    # Resmi depolar (Hızlı ve limit yoktur)
+    OFFICIAL=$(checkupdates 2>/dev/null | wc -l || echo "0")
+    
+    # AUR depoları (Hata durumunda 0 döner, sistemi yormaz)
+    # Hata çıktılarını (429 gibi) çöpe atıyoruz
+    AUR=$(yay -Qum 2>/dev/null | wc -l || echo "0")
+    
+    TOTAL=$((OFFICIAL + AUR))
+}
+
+if [[ "$1" == "module" ]]; then
+    # WAYBAR MODÜLÜ (JSON ÇIKTISI)
+    check_counts
+    
+    if [ "$TOTAL" -eq 0 ]; then
+        # Güncelleme yoksa (Sakin ikon)
+        icon=""
+        tooltip="Sistem güncel hocam."
+    else
+        # Güncelleme varsa (Uyarı ikonu)
+        icon="󰇚"
+        tooltip="<b>Resmi:</b> $OFFICIAL\n<b>AUR:</b> $AUR"
+    fi
+    
+    echo "{\"text\": \"$icon\", \"tooltip\": \"$tooltip\"}"
+else
+    # MANUEL GÜNCELLEME (TERMINAL MODU)
+    clear
+    echo -e "${FG_BLUE}󰚰 Güncellemeleri Yapanzi?${FG_RESET}"
+    
+    # Gerçek güncelleme işlemini başlat
+    yay -Syu
+    
+    # İşlem bittiğinde Waybar'ı tek seferlik yenilemesi için sinyal gönder
+    # (Burada trap kullanmıyoruz, sadece işlem bittiğinde bir kere çalışır)
+    pkill -RTMIN+1 waybar
+    
+    echo -e "\n${FG_BLUE}İşlem tamamlandı.${FG_RESET}"
+    read -rsn 1 -p "Çıkmak için bir tuşa basın..."
+fi

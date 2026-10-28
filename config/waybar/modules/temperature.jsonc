@@ -1,0 +1,13 @@
+{
+	"temperature": {
+    "hwmon-path": "/sys/class/hwmon/hwmon6/temp1_input",
+    "critical-threshold": 90,
+    "interval": 20,
+    "format-critical": "{temperatureC}°C ",
+    "format": "{icon} {temperatureC}°C",
+    "format-icons": ["", "", ""],
+    "max-length": 8,
+    "min-length": 8,
+    "tooltip": false
+}
+}

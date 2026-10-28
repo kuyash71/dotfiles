@@ -1,0 +1,4 @@
+/* off — mullvad.sh tarafından otomatik yazılır */
+.control-center .apps flowboxchild:nth-child(1) > button, .control-center .apps flowboxchild:nth-child(1) > button:hover { background: #45475a; color: #a6adc8; }
+.control-center .apps flowboxchild:nth-child(1) > button:hover { filter: brightness(1.1); }
+.control-center .mvd flowboxchild > button, .control-center .mvd flowboxchild > button:hover { color: #6c7086; }

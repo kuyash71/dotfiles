@@ -1,0 +1,48 @@
+{
+	"clock#time": {
+		// "interval":
+		"format": " 󰅐 {:%H:%M}",
+		// "timezone":
+		// "timezones":
+		// "locale":
+		"min-length": 7,
+		"max-length": 8,
+		// "rotate": 0,
+		// "on-click":
+		// "on-click-middle":
+		// "on-click-right":
+		// "on-scroll-up":
+		// "on-scroll-down":
+		// "smooth-scrolling-threshold":
+		// "tooltip":
+		"tooltip-format": "<b>Standard Time</b>: <span text_transform='lowercase'>{:%I:%M %p}</span>"
+		// "menu":
+		// "menu-file":
+		// "menu-actions":
+		// "expand":
+	},
+
+	/*--------------
+	    Calendar
+	--------------*/
+
+    "clock#date": {
+        "format": "󰸗 {:%d-%m}",
+        "min-length": 8,
+        "max-length": 8,
+        "tooltip": true, // Hover özelliğini zorla aktif ettik
+        "tooltip-format": "<tt><small>{calendar}</small></tt>", 
+        "calendar": {
+            "mode": "month",
+            "mode-mon-col": 3,
+            "on-scroll": 1,
+            "format": {
+                "months":   "<span color='#E5C283'><b>{}</b></span>",
+                "days":     "<span color='#FFF8E7'>{}</span>",
+                "weekdays": "<span color='#957FB8'><b>{}</b></span>",
+                "today":    "<span color='#957FB8'><b><u>{}</u></b></span>"
+            }
+        },
+            "on-click": "thunderbird" // Tıklayınca gsimplecal yerine Thunderbird açılacak
+    }
+}

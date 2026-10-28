@@ -1,0 +1,25 @@
+{
+"group/drawer": {
+    "orientation": "inherit",
+    "drawer": {
+        "transition-duration": 500,
+        "children-class": "not-msi",
+        "transition-left-to-right": true
+    },
+    "modules": [
+        "custom/msi-icon", // Sabit duracak ikonun
+        "tray"             // İçeride gizli duracak gerçek tray
+    ]
+},
+
+"custom/msi-icon": {
+    "format": "", 
+    "tooltip": false,
+    "on-click": "mcontrolcenter"
+},
+
+"tray": {
+    "icon-size": 18,
+    "spacing": 10
+}
+}
