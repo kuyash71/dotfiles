@@ -607,6 +607,10 @@ notificationwindow, blankwindow {
 }
 
 /* --- Başlık: bilgisayar adı + Control Panel --- */
+.host {
+  /* Çerçeve ile başlık arası boşluk */
+  margin-top: 6px;
+}
 .host > label {
   color: #e5c283;
   font-size: 2rem;
