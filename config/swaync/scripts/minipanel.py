@@ -275,8 +275,7 @@ class MiniPanel(Gtk.Application):
         return box
 
     def power(self, action):
-        run(f"{SCRIPTS}/power.sh", action)
-        self.close()
+        self.close_then(f"{SCRIPTS}/power.sh", action)
 
     # --- Bildirim filtresi -------------------------------------------------
     def build_notif(self):
@@ -320,9 +319,9 @@ class MiniPanel(Gtk.Application):
                                        *(("blocked",) if off else ())))
 
     def toggle(self, app):
-        subprocess.run([f"{SCRIPTS}/notif-filter.sh", "toggle", app],
-                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        self.fill_list()
+        # notif-filter.sh SwayNC'yi yeniden yüklüyor, bu da Control Panel'i
+        # kapatıyor; menü panelden önce kapansın
+        self.close_then(f"{SCRIPTS}/notif-filter.sh", "toggle", app)
 
     def on_entry(self, entry):
         name = entry.get_text().strip()
@@ -376,6 +375,16 @@ class MiniPanel(Gtk.Application):
         self.stop_watch()
         self.revealer.set_reveal_child(False)
         GLib.timeout_add(ANIM_MS + 20, self.destroy_window)
+
+    def close_then(self, *cmd):
+        """Menüyü animasyonsuz hemen kapat, komutu ondan sonra çalıştır."""
+        if self.win is None or self.closing:
+            return
+        self.closing = True
+        self.stop_watch()
+        self.destroy_window()
+        # Pencerenin ekrandan kalkmasına bir kare süre tanı
+        GLib.timeout_add(40, lambda: run(*cmd) and False)
 
     def destroy_window(self):
         if self.win is not None:
