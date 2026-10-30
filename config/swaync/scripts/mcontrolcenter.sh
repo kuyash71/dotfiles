@@ -6,7 +6,7 @@
 
 # Pencere zaten açıksa ona odaklan
 if hyprctl clients -j | grep -q '"class": "mcontrolcenter"'; then
-	hyprctl dispatch focuswindow class:mcontrolcenter > /dev/null
+	hyprctl dispatch 'hl.dsp.focus({ window = "class:mcontrolcenter" })' > /dev/null
 	exit 0
 fi
 

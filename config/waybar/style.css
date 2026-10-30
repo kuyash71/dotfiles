@@ -169,3 +169,12 @@ menu separator {
 	margin: 4px 8px;
 	background-color: @surface1;
 }
+
+/* Waybar 0.16 / git: custom modüllerde #custom-<ad> ve durum sınıfları artık
+   yazıyı saran kutuda (box). Yukarıdaki "* { all: initial }" kalıtımı kestiği
+   için yazı rengini ve boyutunu kutudan almasını açıkça söylüyoruz. */
+.module > label {
+	color: inherit;
+	font-size: inherit;
+	font-weight: inherit;
+}

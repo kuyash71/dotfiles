@@ -14,7 +14,7 @@ logout_session() {
 	if uwsm check is-active > /dev/null 2>&1; then
 		uwsm stop
 	else
-		hyprctl dispatch exit
+		hyprctl dispatch 'hl.dsp.exit()'
 	fi
 }
 

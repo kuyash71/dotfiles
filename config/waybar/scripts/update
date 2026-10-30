@@ -1,51 +1,64 @@
 #!/usr/bin/env bash
+#
+# Waybar güncelleme modülü — Pamac tabanlı
+#   update module  -> JSON: ikon + resmi depo / AUR güncellemeleri ayrı ayrı
+#   update gui     -> Pamac'i Güncellemeler sayfasında aç, kapanınca modülü yenile
+#   update         -> terminalde pamac upgrade (resmi + AUR)
+#
+# AUR kontrolü /etc/pamac.conf'taki EnableAUR + CheckAURUpdates ayarlarına bağlı.
 
-# SAURO Clean Update Script - 2026 Edition
-# Gereksiz döngülerden arındırılmış, sadece tıklandığında veya 
-# belirlenen aralıkta (interval) çalışan temiz versiyon.
-
-# Renkler ve Ayarlar
 FG_BLUE="\e[34m"
 FG_RESET="\e[39m"
 
-check_counts() {
-    # Resmi depolar (Hızlı ve limit yoktur)
-    OFFICIAL=$(checkupdates 2>/dev/null | wc -l || echo "0")
-    
-    # AUR depoları (Hata durumunda 0 döner, sistemi yormaz)
-    # Hata çıktılarını (429 gibi) çöpe atıyoruz
-    AUR=$(yay -Qum 2>/dev/null | wc -l || echo "0")
-    
-    TOTAL=$((OFFICIAL + AUR))
+refresh_waybar() { pkill -RTMIN+1 waybar; }
+
+module() {
+	local out repo=() aur=()
+	# Satır biçimi: "ad  eski -> yeni  depo". "Out of Date:" altı güncelleme değil,
+	# AUR'da güncelliği işaretlenmiş paketlerin listesi; onu atla.
+	out=$(LC_ALL=C pamac checkupdates --aur 2>/dev/null | sed '/^Out of Date:/,$d')
+	while read -r name _ arrow new src; do
+		[[ $arrow == "->" ]] || continue
+		if [[ $src == AUR ]]; then
+			aur+=("$name  $new")
+		else
+			repo+=("$name  $new  ($src)")
+		fi
+	done <<< "$out"
+
+	local total=$(( ${#repo[@]} + ${#aur[@]} ))
+	local icon tooltip
+	if (( total == 0 )); then
+		icon=""
+		tooltip="Sistem güncel hocam."
+	else
+		icon="󰇚"
+		tooltip="<b>Resmi / CachyOS: ${#repo[@]}</b>"
+		(( ${#repo[@]} )) && tooltip+=$(printf '\n  %s' "${repo[@]:0:15}")
+		tooltip+=$'\n'"<b>AUR: ${#aur[@]}</b>"
+		(( ${#aur[@]} )) && tooltip+=$(printf '\n  %s' "${aur[@]:0:15}")
+		tooltip+=$'\n\n'"Sol tık: Pamac · Orta tık: terminal · Sağ tık: yenile"
+	fi
+
+	jq -cn --arg text "$icon" --arg tooltip "$tooltip" \
+		--arg class "$( (( total )) && echo pending || echo updated )" \
+		'{text: $text, tooltip: $tooltip, class: $class}'
 }
 
-if [[ "$1" == "module" ]]; then
-    # WAYBAR MODÜLÜ (JSON ÇIKTISI)
-    check_counts
-    
-    if [ "$TOTAL" -eq 0 ]; then
-        # Güncelleme yoksa (Sakin ikon)
-        icon=""
-        tooltip="Sistem güncel hocam."
-    else
-        # Güncelleme varsa (Uyarı ikonu)
-        icon="󰇚"
-        tooltip="<b>Resmi:</b> $OFFICIAL\n<b>AUR:</b> $AUR"
-    fi
-    
-    echo "{\"text\": \"$icon\", \"tooltip\": \"$tooltip\"}"
-else
-    # MANUEL GÜNCELLEME (TERMINAL MODU)
-    clear
-    echo -e "${FG_BLUE}󰚰 Güncellemeleri Yapanzi?${FG_RESET}"
-    
-    # Gerçek güncelleme işlemini başlat
-    yay -Syu
-    
-    # İşlem bittiğinde Waybar'ı tek seferlik yenilemesi için sinyal gönder
-    # (Burada trap kullanmıyoruz, sadece işlem bittiğinde bir kere çalışır)
-    pkill -RTMIN+1 waybar
-    
-    echo -e "\n${FG_BLUE}İşlem tamamlandı.${FG_RESET}"
-    read -rsn 1 -p "Çıkmak için bir tuşa basın..."
-fi
+case $1 in
+	module)
+		module
+		;;
+	gui)
+		pamac-manager --updates
+		refresh_waybar
+		;;
+	*)
+		clear
+		echo -e "${FG_BLUE}󰚰 Güncellemeleri yapalım mı?${FG_RESET}"
+		pamac upgrade --aur
+		refresh_waybar
+		echo -e "\n${FG_BLUE}İşlem tamamlandı.${FG_RESET}"
+		read -rsn 1 -p "Çıkmak için bir tuşa basın..."
+		;;
+esac

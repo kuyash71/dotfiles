@@ -5,7 +5,7 @@
 		// "exec-on-event":
 		// "hide-empty-text":
 		"return-type": "json",
-		"interval": 36000,
+		"interval": 3600,
 		// "restart-interval":
 		"signal": 1,
 		"format": "{}",
@@ -15,8 +15,8 @@
 		// "justify":
 		"min-length": 2,
 		"max-length": 2,
-		"on-click": "kitty -e ~/.config/waybar/scripts/update",
-		// "on-click-middle":
+		"on-click": "~/.config/waybar/scripts/update gui",
+		"on-click-middle": "kitty -e ~/.config/waybar/scripts/update",
 		"on-click-right": "pkill -RTMIN+1 waybar"
 		// "on-update":
 		// "on-scroll-up":

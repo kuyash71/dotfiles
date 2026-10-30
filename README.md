@@ -7,7 +7,7 @@ CachyOS (Arch) + Hyprland 0.56 masaüstü ayarları. Lavanta & altın tema
 
 | Klasör | Ne |
 |---|---|
-| `config/hypr` | Hyprland, hyprlock, yardımcı betikler (`scripts/`), duvar kağıtları |
+| `config/hypr` | Hyprland (`hyprland.lua`), hyprlock, yardımcı betikler (`scripts/`), duvar kağıtları |
 | `config/waybar` | Üst bar — [mechabar](https://github.com/sejjy/mechabar) temeli üzerine özelleştirilmiş |
 | `config/swaync` | Bildirim servisi + sağdan açılan **Control Panel** |
 | `config/swayosd` | Ses / parlaklık / Caps Lock ekran göstergesi |
@@ -16,6 +16,7 @@ CachyOS (Arch) + Hyprland 0.56 masaüstü ayarları. Lavanta & altın tema
 | `config/fish` | Kabuk (`fish_variables` bilerek dahil değil) |
 | `config/qt6ct` | Qt uygulamalarının teması |
 | `config/autostart` | Blueman otomatik başlatmasını kapatır (Bluetooth'u KDE bluedevil yönetiyor) |
+| `zen/` | Zen Browser: pencere sürüklemeyi ve kapat/küçült/büyüt butonlarını kapatır. Profil klasörüne kopyalanır: `userChrome.css` → `chrome/`, `user.js` → profil köküne (Flatpak'te `~/.var/app/app.zen_browser.zen/.zen/<profil>/`) |
 | `system/` | Sistem dosyaları (`/etc` altına gider, `sudo` gerekir) |
 
 ## Control Panel (swaync)
@@ -62,6 +63,12 @@ kullanıcıda dosyadaki adı değiştir.
 
 ## Notlar
 
+- **Hyprland 0.57+ sadece Lua config okur.** `hyprland.lua` asıl config;
+  `hyprland.conf` 0.56 ve öncesi için arşiv olarak duruyor. `hyprland.lua`
+  yoksa Hyprland varsayılan bir config üretip onunla açılır (Waybar, Türkçe
+  klavye vb. olmadan). `hyprctl dispatch` de artık Lua bekler:
+  `hyprctl dispatch 'hl.dsp.exit()'`. Doğrulamak için:
+  `Hyprland --verify-config -c ~/.config/hypr/hyprland.lua`
 - **Blur (GTK 4.24 + Hyprland 0.56):** GTK4 uygulamalarında layerrule'daki
   `blur = on` tek başına yetmez; GTK blur alanını kendisi bildirir. CSS'te
   `backdrop-filter` olmayan yüzey için alan boş kalır ve blur olmaz
