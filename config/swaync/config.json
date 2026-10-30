@@ -10,8 +10,8 @@
   "layer-shell": true,
   "layer-shell-cover-screen": true,
   "cssPriority": "user",
-  "control-center-margin-top": 83,
-  "control-center-margin-bottom": 83,
+  "control-center-margin-top": 33,
+  "control-center-margin-bottom": 33,
   "control-center-margin-right": 14,
   "control-center-margin-left": 0,
   "notification-2fa-action": true,
@@ -23,8 +23,8 @@
   "timeout-critical": 0,
   "fit-to-screen": true,
   "relative-timestamps": true,
-  "control-center-width": 572,
-  "control-center-height": 663,
+  "control-center-width": 458,
+  "control-center-height": 763,
   "notification-window-width": 400,
   "keyboard-shortcuts": true,
   "notification-grouping": true,
@@ -35,57 +35,21 @@
   "text-empty": "Bildirim yok",
   "script-fail-notify": true,
   "widgets": [
-    "label#host",
-    "label#user",
+    "menubar#top",
     "label#subtitle",
-    "buttons-grid#power",
     "buttons-grid#toggles",
     "backlight",
     "buttons-grid#apps",
     "buttons-grid#mvd",
     "mpris",
-    "volume",
-    "buttons-grid#volgear",
     "title",
+    "menubar#ngear",
     "notifications"
   ],
   "widget-config": {
-    "label#host": {
-      "text": "󰖙 kvara",
-      "max-lines": 1
-    },
-    "label#user": {
-      "text": "󰀄 kuyash",
-      "max-lines": 1
-    },
     "label#subtitle": {
       "text": "Control Panel",
       "max-lines": 1
-    },
-    "buttons-grid#power": {
-      "buttons-per-row": 5,
-      "actions": [
-        {
-          "label": "󰌾",
-          "command": "sh -c 'setsid -f $HOME/.config/swaync/scripts/power.sh lock'"
-        },
-        {
-          "label": "󰤄",
-          "command": "sh -c 'setsid -f $HOME/.config/swaync/scripts/power.sh suspend'"
-        },
-        {
-          "label": "󰍃",
-          "command": "sh -c 'setsid -f $HOME/.config/swaync/scripts/power.sh logout'"
-        },
-        {
-          "label": "󰜉",
-          "command": "sh -c 'setsid -f $HOME/.config/swaync/scripts/power.sh reboot'"
-        },
-        {
-          "label": "󰐥",
-          "command": "sh -c 'setsid -f $HOME/.config/swaync/scripts/power.sh poweroff'"
-        }
-      ]
     },
     "buttons-grid#toggles": {
       "buttons-per-row": 4,
@@ -159,19 +123,6 @@
       "show-album-art": "when-available",
       "loop-carousel": true
     },
-    "volume": {
-      "label": "󰕾",
-      "show-per-app": false
-    },
-    "buttons-grid#volgear": {
-      "buttons-per-row": 1,
-      "actions": [
-        {
-          "label": "󰒓",
-          "command": "sh -c 'swaync-client -cp; setsid -f pavucontrol'"
-        }
-      ]
-    },
     "title": {
       "text": "NOTIFICATIONS",
       "clear-all-button": true,
@@ -179,6 +130,53 @@
     },
     "notifications": {
       "vexpand": true
+    },
+    "menubar#ngear": {
+      "buttons#gear": {
+        "position": "left",
+        "actions": [
+          {
+            "label": "󰒓",
+            "command": "sh -c 'setsid -f $HOME/.config/swaync/scripts/mini-panel.sh notif'"
+          }
+        ]
+      }
+    },
+    "menubar#top": {
+      "buttons#sun": {
+        "position": "left",
+        "actions": [
+          {
+            "label": "󰖙",
+            "command": "sh -c 'setsid -f $HOME/.config/swaync/scripts/mini-panel.sh power'"
+          }
+        ]
+      },
+      "buttons#host": {
+        "position": "left",
+        "actions": [
+          {
+            "label": "kvara",
+            "command": "true"
+          }
+        ]
+      },
+      "buttons#user": {
+        "position": "right",
+        "actions": [
+          {
+            "label": "󰀄  kuyash",
+            "command": "true"
+          }
+        ]
+      }
     }
-  }
+  },
+  "scripts": {
+    "known-apps": {
+      "exec": "/home/kuyash/.config/swaync/scripts/notif-filter.sh log",
+      "app-name": ".*"
+    }
+  },
+  "notification-visibility": {}
 }

@@ -1,0 +1,10 @@
+[SddmGreeterTheme]
+Name=kvara
+Description=Lavanta & Altın — hyprlock kilit ekranıyla aynı tasarım
+Author=kuyash
+Type=sddm-theme
+Version=1.0
+MainScript=Main.qml
+ConfigFile=theme.conf
+QtVersion=6
+X-SDDM-Theme-InterfaceVersion=2

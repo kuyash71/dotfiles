@@ -36,9 +36,11 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("flatpak run app.zen_browser.zen")
     hl.exec_cmd("wl-paste --type text --watch cliphist --max-items 200 store")
     hl.exec_cmd("wl-paste --type image --watch cliphist --max-items 50 store")
+    hl.exec_cmd("wl-clip-persist --clipboard regular")  -- uygulama kapanınca pano kaybolmasın
 
     hl.exec_cmd("mullvad lockdown-mode set off")
-    hl.exec_cmd("swaync")
+    hl.exec_cmd("systemctl --user start swaync")
+    hl.exec_cmd("~/.config/swaync/scripts/mini-panel.sh daemon")  -- Control Panel mini panelleri
     hl.exec_cmd("swayosd-server")
 
     hl.exec_cmd("gnome-keyring-daemon --start --components=secrets")
@@ -280,6 +282,17 @@ hl.layer_rule({
     match        = { namespace = "swaync-notification-window" },
     blur         = true,
     ignore_alpha = 0.3,
+})
+
+-- --- Control Panel mini panelleri (güç menüsü / bildirim filtresi) ---
+-- Ekranı kaplayan şeffaf katman; sadece menü kutusu blur'lanır. Kayma
+-- animasyonunu menü kendisi yapıyor (swaync/scripts/minipanel.py).
+hl.layer_rule({
+    name         = "kvara-minipanel",
+    match        = { namespace = "kvara-minipanel" },
+    blur         = true,
+    ignore_alpha = 0.3,
+    no_anim      = true,
 })
 
 -- --- SwayOSD: ses/parlaklık göstergesi (blur yok, bkz. swayosd/style.css) ---

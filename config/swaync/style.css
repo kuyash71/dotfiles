@@ -607,16 +607,6 @@ notificationwindow, blankwindow {
 }
 
 /* --- Başlık: bilgisayar adı + Control Panel --- */
-.host {
-  /* Çerçeve ile başlık arası boşluk */
-  margin-top: 6px;
-}
-.host > label {
-  color: #e5c283;
-  font-size: 2rem;
-  font-weight: bold;
-  margin-top: 10px;
-}
 .subtitle > label {
   color: #957fb8;
   font-size: 0.95rem;
@@ -651,10 +641,6 @@ notificationwindow, blankwindow {
   border-color: #957fb8;
 }
 
-/* Güç satırı: kapatma kırmızımsı */
-.power flowboxchild > button { color: #e5c283; }
-.power flowboxchild:nth-child(5) > button:hover { background: #f38ba8; color: #11111b; }
-
 /* Uygulama butonları: yazılı ve biraz daha büyük */
 .apps flowboxchild > button {
   font-size: 0.95rem;
@@ -662,31 +648,17 @@ notificationwindow, blankwindow {
   min-height: 46px;
 }
 
-/* --- Kaydırıcılar (ses / parlaklık) --- */
-.widget-volume,
+/* --- Parlaklık kaydırıcısı --- */
 .widget-backlight {
   background: rgba(30, 30, 46, 0.5);
   border: 1px solid rgba(149, 127, 184, 0.25);
   border-radius: 12px;
   padding: 4px 10px;
 }
-.widget-volume label,
 .widget-backlight label {
   color: #e5c283;
   font-size: 1.3rem;
   margin-right: 6px;
-}
-/* Ses kaydırıcısının sağında çark için yer aç */
-.widget-volume {
-  margin-right: 82px;
-}
-.volgear {
-  margin-top: -60px;
-  margin-left: 504px;
-}
-.volgear flowboxchild > button {
-  min-height: 42px;
-  font-size: 1.3rem;
 }
 scale trough { background: #313244; border-radius: 10px; min-height: 6px; }
 scale highlight { background: #957fb8; border-radius: 10px; }
@@ -736,6 +708,7 @@ scale slider { background: #e5c283; border-radius: 100%; min-width: 14px; min-he
   padding: 0 4px;
 }
 .widget-title > label {
+  margin-left: 40px;
   color: #e5c283;
   font-size: 1rem;
   font-weight: bold;
@@ -812,14 +785,80 @@ progressbar progress { background: #e5c283; border-radius: 10px; }
   backdrop-filter: blur(24px);
 }
 
-/* --- Kullanıcı adı: bilgisayar adıyla aynı satırda, sağda --- */
-.user {
-  margin-top: -40px;
-  transform: translate(491px, 14px);
+/* --- Üst satır: [󰖙 güç] kvara ............ 󰀄 kuyash ---
+   Tek menubar satırı, dikey ortalar otomatik hizalı. Güneşe basınca
+   mini-panel.sh panelin soluna rofi ile güç menüsünü açar. */
+.top {
+  margin-top: 8px;
 }
-.user > label {
+.top > .menu-button-bar > .start,
+.top > .menu-button-bar > .end {
+  margin: 0;
+}
+.top > .menu-button-bar button {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  margin: 0;
+  padding: 0;
+  min-height: 0;
+  min-width: 0;
+}
+/* Güneş = güç butonu */
+.top .sun button {
+  color: #e5c283;
+  font-size: 2rem;
+  padding: 0;
+  transition: color 120ms ease-in-out;
+}
+/* Menü açıkken aynı renk minipanel.py tarafından simgenin üstüne çiziliyor */
+.top .sun button:hover {
+  background: transparent;
+  color: #957fb8;
+}
+.top .host button,
+.top .host button:hover,
+.top .host button:active {
+  background: transparent;
+  color: #e5c283;
+  font-size: 2rem;
+  font-weight: bold;
+  padding-left: 10px;
+}
+.top .user button,
+.top .user button:hover,
+.top .user button:active {
+  background: transparent;
   color: #957fb8;
   font-size: 1.05rem;
+}
+
+/* --- NOTIFICATIONS solunda bildirim filtresi çarkı ---
+   menubar#ngear başlıktan SONRA geliyor ve başlığın satırına çekiliyor;
+   böylece üstte o duruyor ve tıklamayı alıyor. margin-right ile sadece
+   sol köşeyi kaplıyor, CLEAR butonunun tıklamasını engellemiyor. */
+.ngear {
+  margin-top: -33px;
+  margin-right: 400px;
+}
+.ngear > .menu-button-bar > .start {
+  margin-left: 0;
+}
+.ngear > .menu-button-bar button {
+  background: transparent;
+  color: #957fb8;
+  border: none;
+  margin: 0;
+  min-width: 30px;
+  min-height: 28px;
+  padding: 0;
+  font-size: 1.05rem;
+  box-shadow: none;
+  transition: color 120ms ease-in-out;
+}
+.ngear > .menu-button-bar button:hover {
+  background: transparent;
+  color: #e5c283;
 }
 
 /* --- Mullvad + mini daemon butonu (birleşik "split" buton) ---
@@ -837,10 +876,10 @@ progressbar progress { background: #e5c283; border-radius: 10px; }
 .mvd {
   margin-top: -70px;
   margin-left: 0;
-  margin-right: 487px;
+  margin-right: 373px;
   /* Kutunun tamamı ölçekleniyor ki MSI Center'ın üstüne taşmasın */
   transform-origin: 0 50%;
-  transform: translateX(181px) scaleX(0.4167);
+  transform: translateX(138px) scaleX(0.4167);
 }
 .mvd flowbox,
 .mvd flowboxchild,

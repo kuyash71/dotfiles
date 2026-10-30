@@ -24,16 +24,49 @@ CachyOS (Arch) + Hyprland 0.56 masaüstü ayarları. Lavanta & altın tema
 Waybar'ın en sağındaki butonla açılır (SUPER+N de olur), tıklanan monitörde
 sağdan kayarak gelir. Bildirim varsa Waybar butonu altın renge döner.
 
-- Güç satırı: kilit, uyku, çıkış, yeniden başlat, kapat (son üçü onay ister)
+- Bilgisayar adının solundaki güneş (󰖙) güç butonu: panelin soluna mini bir
+  güç menüsü açar (kilit, uyku, çıkış, yeniden başlat, kapat; son üçü onay ister)
 - Wi-Fi, Bluetooth, Rahatsız Etme, ekran görüntüsü, parlaklık
 - **Mullvad** butonu: yeşil = bağlı, kırmızı = daemon açık / VPN kapalı,
   gri = daemon kapalı, altın = bağlanıyor. Yanındaki mini buton daemon'u açar/kapatır.
 - MSI Center (MControlCenter), Razer (Polychromatic)
-- Medya, ses (+ çark: pavucontrol), bildirimler
+- Medya, bildirimler. NOTIFICATIONS solundaki çark, panelin soluna açılan mini
+  panelde hangi uygulamaların bildirim
+  gönderebileceğini seçtirir. Bildirim gönderen
+  uygulamalar `~/.local/state/swaync/known-apps`'e kaydedilir; kapatılanlar
+  `config.json` → `notification-visibility` altına `block: <ad>` olarak yazılır.
+  `config.json`'daki `scripts` girdisi tam yol kullanır (`/home/kuyash/...`):
+  SwayNC script komutlarında `sh -c` ve `$HOME` çalışmıyor.
+- Mini paneller `scripts/minipanel.py` (GTK4 + gtk4-layer-shell, Python).
+  Oturum açılınca arka planda başlar (`mini-panel.sh daemon`, cairo ile çizim,
+  ~75 MB); butonlar `mini-panel.sh power|notif` ile sinyal gönderir, böylece
+  menü ~50 ms'de açılır. Ekranı kaplayan şeffaf bir katmanda menü
+  panelin kenarından sola kayar; dışarı tıklama / Esc / panelin kapanması
+  menüyü kapatır. Konumlar ölçülmüş sabitler (ölçek 1.25, panel 458px);
+  panel boyutu değişirse `minipanel.py`'nin başındaki değerler güncellenmeli.
+  Gereken paketler: `python-gobject`, `gtk4-layer-shell`.
 
 Betikler: `config/swaync/scripts/` (`mullvad.sh`, `power.sh`, `toggle.sh`,
 `mcontrolcenter.sh`). `config/swaync/mullvad-state.css` `mullvad.sh`
 tarafından otomatik yazılır.
+
+## Kilit ve giriş ekranı
+
+hyprlock (`config/hypr/hyprlock.conf`) ve SDDM (`system/usr/share/sddm/themes/kvara`)
+aynı tasarımı kullanır: blur'suz `tower.png`, sol sütunda saat + cam kart.
+Arka plan, solu hafif karartılmış bir kopya (`lock-bg.png`); duvar kağıdı
+değişirse `config/hypr/scripts/lock-bg.py` ile yeniden üretilip SDDM temasının
+`assets/background.png`'sine de kopyalanmalı. Boyutlar 1920x1080 fiziksel
+piksel (hyprlock ölçek uygulamıyor). SDDM teması pixie'nin yerine geçti:
+pixie avatarı gösteremiyordu (uzantısız yolu reddediyordu) ve paket
+güncellemesinde elle yapılan değişiklikler silinirdi.
+
+```fish
+sudo cp -r system/usr/share/sddm/themes/kvara /usr/share/sddm/themes/
+sudo sed -i 's/^Current=.*/Current=kvara/' /etc/sddm.conf /etc/sddm.conf.d/theme.conf
+```
+
+Test (kurmadan): `sddm-greeter-qt6 --test-mode --theme system/usr/share/sddm/themes/kvara`
 
 ## Gerekli paketler
 
