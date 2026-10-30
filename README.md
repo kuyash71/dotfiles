@@ -43,7 +43,8 @@ sağdan kayarak gelir. Bildirim varsa Waybar butonu altın renge döner.
   menü ~50 ms'de açılır. Ekranı kaplayan şeffaf bir katmanda menü
   panelin kenarından sola kayar; dışarı tıklama / Esc / panelin kapanması
   menüyü kapatır. Konumlar ölçülmüş sabitler (ölçek 1.25, panel 458px);
-  panel boyutu değişirse `minipanel.py`'nin başındaki değerler güncellenmeli.
+  panel boyutu değişirse `minipanel.py`'nin başındaki değerler güncellenmeli
+  (çarkın yüksekliği medya kartına göre değiştiği için ekrandan okunuyor).
   Gereken paketler: `python-gobject`, `gtk4-layer-shell`.
 
 Betikler: `config/swaync/scripts/` (`mullvad.sh`, `power.sh`, `toggle.sh`,

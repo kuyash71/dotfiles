@@ -24,6 +24,7 @@ mini-panel.sh üzerinden başlatılır (LD_PRELOAD gerekiyor).
 import json
 import os
 import signal
+import re
 import subprocess
 import sys
 
@@ -57,7 +58,9 @@ GAP = 10  # menü ile panel arası
 ANIM_MS = 220
 
 HOST_Y = 106  # bilgisayar adının dikey ortası → güç menüsünün üst kenarı
-GEAR_Y = (503, 372)  # çarkın dikey ortası: medya kartı görünürken / gizliyken
+GEAR_Y = (503, 372)  # çarkın tahmini dikey ortası (ekrandan okunamazsa): medya kartı var / yok
+GEAR_SCAN_X = (1080, 1100)  # çarkın arandığı sütun (NOTIFICATIONS yazısından önce biter)
+GEAR_COLORS = ((149, 127, 184), (229, 194, 131))  # normal / hover
 
 # Menü açıkken "aktif" simge: SwayNC'deki simgenin tam üstüne (sol üst köşe)
 SUN = {"text": "󰖙", "x": 1074, "y": 83, "css": "sun"}
@@ -134,10 +137,54 @@ def focused_monitor():
 
 
 def gear_center_y(mon):
-    """Çarkın konumu medya kartına göre değişiyor: tıklanan noktaya en yakını."""
+    """Çarkın dikey ortası. Medya kartının yüksekliği çalan içeriğe göre
+    değiştiği için sabit değil: tıklanan yerin çevresinde ekrandan okunur."""
     cy = int(hypr_json("cursorpos")["y"]) - mon["y"]
+    found = scan_gear(mon, cy)
+    if found is not None:
+        return found
     best = min(GEAR_Y, key=lambda y: abs(y - cy))
     return best if abs(best - cy) <= 20 else cy
+
+
+def scan_gear(mon, cy):
+    """Monitörün görüntüsünde, tıklanan y'nin ±30 px çevresinde çarkın
+    renklerindeki piksellerin dikey ortası (mantıksal px). Bulamazsa None."""
+    try:
+        ppm = subprocess.run(["grim", "-t", "ppm", "-o", mon["name"], "-"],
+                             capture_output=True, timeout=1).stdout
+        # P6\n<w> <h>\n255\n<RGB...>. split() kullanma: koyu pikseller boşluk
+        # baytı (0x09, 0x20…) olabiliyor ve başlıkla birlikte yutuluyor
+        m = re.match(rb"P6\s+(\d+)\s+(\d+)\s+\d+\s", ppm)
+        w, h = int(m[1]), int(m[2])
+        data = ppm[m.end():]
+    except (subprocess.SubprocessError, TypeError, OSError):
+        return None
+    sc = mon["scale"]
+    x0, x1 = (int(x * sc) for x in GEAR_SCAN_X)
+    y0, y1 = max(0, int((cy - 30) * sc)), min(h, int((cy + 30) * sc))
+    rows = []
+    for y in range(y0, y1):
+        line = data[(y * w + x0) * 3:(y * w + x1) * 3]
+        for i in range(0, len(line), 3):
+            px = line[i:i + 3]
+            if any(all(abs(a - b) <= 24 for a, b in zip(px, c)) for c in GEAR_COLORS):
+                rows.append(y)
+                break
+    # Bitişik satır grupları: medya kartının kenarı da aynı mor, onu ayıkla.
+    # Simge boyunda (8-28 px) olup tıklanan yere en yakın grup çarktır.
+    runs, start = [], None
+    for i, y in enumerate(rows):
+        if start is None:
+            start = y
+        if i + 1 == len(rows) or rows[i + 1] - y > 2:
+            runs.append((start, y))
+            start = None
+    runs = [r for r in runs if 8 * sc <= r[1] - r[0] + 1 <= 28 * sc]
+    if not runs:
+        return None
+    a, b = min(runs, key=lambda r: abs((r[0] + r[1]) / 2 - cy * sc))
+    return round((a + b) / 2 / sc)
 
 
 def read_apps():
