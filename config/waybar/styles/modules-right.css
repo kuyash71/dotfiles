@@ -19,6 +19,28 @@
 }
 
 /*-------------
+    Dikte
+-------------*/
+
+#custom-hyprwhspr {
+	background-color: @volume;
+	padding: 0 12px;
+}
+#custom-hyprwhspr:hover {
+	color: @hover-fg;
+}
+#custom-hyprwhspr.recording {
+	color: @red;
+}
+#custom-hyprwhspr.stopped,
+#custom-hyprwhspr.unloaded {
+	color: @overlay1;
+}
+#custom-hyprwhspr.error {
+	color: @yellow;
+}
+
+/*-------------
     Battery
 -------------*/
 

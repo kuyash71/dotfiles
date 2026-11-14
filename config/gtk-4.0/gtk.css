@@ -1,0 +1,11 @@
+/* Catppuccin teması aynen; üstüne uygulama istisnaları */
+@import url("/usr/share/themes/catppuccin-mocha-mauve-standard+default/gtk-4.0/gtk.css");
+
+/* Rnote: renk kutularını temanın buton rengi ezmesin */
+button.colorsetter,
+button.colorsetter:hover,
+button.colorsetter:checked {
+  background: @colorsetter_color;
+  color: @colorsetter_fg_color;
+}
+@import 'colors.css';

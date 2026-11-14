@@ -37,14 +37,15 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("wl-paste --type text --watch cliphist --max-items 200 store")
     hl.exec_cmd("wl-paste --type image --watch cliphist --max-items 50 store")
     hl.exec_cmd("wl-clip-persist --clipboard regular")  -- uygulama kapanınca pano kaybolmasın
-
+    
     hl.exec_cmd("mullvad lockdown-mode set off")
     hl.exec_cmd("systemctl --user start swaync")
     hl.exec_cmd("~/.config/swaync/scripts/mini-panel.sh daemon")  -- Control Panel mini panelleri
     hl.exec_cmd("swayosd-server")
+    hl.exec_cmd("easyeffects --hide-window")  -- mikrofon efektleri; varsayılan mikrofon "Easy Effects Source"
 
     hl.exec_cmd("gnome-keyring-daemon --start --components=secrets")
-
+    hl.exec_cmd("easyeffects --hide-window")
     hl.exec_cmd("hyprctl setcursor Bibata-Modern-Classic 20")
 end)
 
@@ -193,6 +194,7 @@ local mainMod = "SUPER"
 
 hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd(terminal))
 hl.bind("CTRL + SHIFT + Z",    hl.dsp.exec_cmd("flatpak run app.zen_browser.zen"))
+hl.bind("CTRL + SHIFT + L",    hl.dsp.exec_cmd("limusic-app"))
 hl.bind("CTRL + W",            hl.dsp.window.close())
 hl.bind("CTRL + SPACE",        hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + TAB",   hl.dsp.window.float({ action = "toggle" }))
@@ -231,6 +233,9 @@ hl.bind("PRINT",                   hl.dsp.exec_cmd("hyprshot -m output"))
 hl.bind(mainMod .. " + PRINT",     hl.dsp.exec_cmd("hyprshot -m window"))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("hyprshot -m region -o ~/Documents/HyprShot"))
 
+-- Tekerlek yukarı / aşağı = sol / sağ tık (aç / kapat); oyun modunda da çalışır
+hl.bind(mainMod .. " + SHIFT + C", hl.dsp.exec_cmd("~/.config/hypr/scripts/scroll-click.sh"), { submap_universal = true })
+
 -- Scroll through existing workspaces with mainMod + scroll
 hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
 hl.bind(mainMod .. " + mouse_up",   hl.dsp.focus({ workspace = "e-1" }))
@@ -239,21 +244,33 @@ hl.bind(mainMod .. " + mouse_up",   hl.dsp.focus({ workspace = "e-1" }))
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
+-- Oyun modu: kısayollar kapalı, tuşlar doğrudan oyuna gider (Control Panel'deki buton).
+-- İçinde yalnızca çıkış var; { submap_universal } olan ses / parlaklık / medya
+-- tuşları her modda çalışır.
+local gaming = "~/.config/hypr/scripts/gaming.sh toggle"
+hl.bind(mainMod .. " + SHIFT + G", hl.dsp.exec_cmd(gaming))
+hl.define_submap("gaming", function()
+    hl.bind(mainMod .. " + SHIFT + G", hl.dsp.exec_cmd(gaming))
+end)
+
+-- Dikte (hyprwhspr): bas konuş, tekrar bas yazsın. Oyun modunda kapalı.
+hl.bind(mainMod .. " + ALT + D", hl.dsp.exec_cmd("hyprwhspr record toggle"))
+
 -- Multimedia tuşları — SwayOSD: değişikliği yapar ve ekranda gösterge çıkarır
 local osd = "~/.config/hypr/scripts/osd.sh "
-hl.bind("XF86AudioRaiseVolume",  hl.dsp.exec_cmd(osd .. "--output-volume raise --max-volume 100"), { locked = true, repeating = true })
-hl.bind("XF86AudioLowerVolume",  hl.dsp.exec_cmd(osd .. "--output-volume lower"),                  { locked = true, repeating = true })
-hl.bind("XF86AudioMute",         hl.dsp.exec_cmd(osd .. "--output-volume mute-toggle"),            { locked = true, repeating = true })
-hl.bind("XF86AudioMicMute",      hl.dsp.exec_cmd(osd .. "--input-volume mute-toggle"),             { locked = true, repeating = true })
-hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd(osd .. "--brightness raise"),                     { locked = true, repeating = true })
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd(osd .. "--brightness lower"),                     { locked = true, repeating = true })
+hl.bind("XF86AudioRaiseVolume",  hl.dsp.exec_cmd(osd .. "--output-volume raise --max-volume 100"), { locked = true, submap_universal = true, repeating = true })
+hl.bind("XF86AudioLowerVolume",  hl.dsp.exec_cmd(osd .. "--output-volume lower"),                  { locked = true, submap_universal = true, repeating = true })
+hl.bind("XF86AudioMute",         hl.dsp.exec_cmd(osd .. "--output-volume mute-toggle"),            { locked = true, submap_universal = true, repeating = true })
+hl.bind("XF86AudioMicMute",      hl.dsp.exec_cmd(osd .. "--input-volume mute-toggle"),             { locked = true, submap_universal = true, repeating = true })
+hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd(osd .. "--brightness raise"),                     { locked = true, submap_universal = true, repeating = true })
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd(osd .. "--brightness lower"),                     { locked = true, submap_universal = true, repeating = true })
 hl.bind("Caps_Lock",             hl.dsp.exec_cmd(osd .. "--caps-lock"),                            { release = true })
 
 -- Requires playerctl
-hl.bind("XF86AudioNext",  hl.dsp.exec_cmd("playerctl next"),       { locked = true })
-hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
-hl.bind("XF86AudioPlay",  hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
-hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),   { locked = true })
+hl.bind("XF86AudioNext",  hl.dsp.exec_cmd("playerctl next"),       { locked = true, submap_universal = true })
+hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true, submap_universal = true })
+hl.bind("XF86AudioPlay",  hl.dsp.exec_cmd("playerctl play-pause"), { locked = true, submap_universal = true })
+hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),   { locked = true, submap_universal = true })
 
 
 --------------------------------
@@ -261,10 +278,13 @@ hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),   { locked = tr
 --------------------------------
 
 -- --- Rofi Blur Kuralı ---
+-- rofi 2.1'den beri katman tüm ekranı kaplıyor; ignore_alpha olmadan
+-- bütün arka plan blur'lanıyor, böylece sadece menü kutusu blur'lanır.
 hl.layer_rule({
-    name  = "rofi-blur",
-    match = { namespace = "rofi" },
-    blur  = true,
+    name         = "rofi-blur",
+    match        = { namespace = "rofi" },
+    blur         = true,
+    ignore_alpha = 0.3,
 })
 
 -- --- SwayNC: kontrol paneli (blur + sağdan içeri kayar) ---

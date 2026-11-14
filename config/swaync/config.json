@@ -76,8 +76,11 @@
           "update-command": "sh -c '$HOME/.config/swaync/scripts/toggle.sh dnd get'"
         },
         {
-          "label": "󰹑",
-          "command": "sh -c 'swaync-client -cp; sleep 0.4; setsid -f hyprshot -m region'"
+          "label": "󰊗",
+          "type": "toggle",
+          "active": false,
+          "command": "sh -c '$HOME/.config/swaync/scripts/toggle.sh gaming set'",
+          "update-command": "sh -c '$HOME/.config/swaync/scripts/toggle.sh gaming get'"
         }
       ]
     },

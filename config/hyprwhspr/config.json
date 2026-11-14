@@ -1,0 +1,9 @@
+{
+  "$schema": "https://raw.githubusercontent.com/goodroot/hyprwhspr/main/share/config.schema.json",
+  "external_bindings": true,
+  "transcription_backend": "faster-whisper",
+  "faster_whisper_model": "large-v3-turbo",
+  "language": "tr",
+  "tray_icon_enabled": false,
+  "audio_ducking": true
+}

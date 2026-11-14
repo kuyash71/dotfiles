@@ -1,0 +1,17 @@
+[StreamInputs]
+inputDevice=alsa_input.usb-Razer_Inc._Razer_Seiren_V3_Mini-00.mono-fallback
+listenToMicVolume=0.91
+plugins=rnnoise#0,gate#0,compressor#0,limiter#0
+visiblePage=pluginsPage
+visiblePlugin=gate#0
+
+[StreamOutputs]
+outputDevice=bluez_output.00_7F_1D_31_44_3C.1
+
+[Style]
+forceBreezeTheme=false
+
+[Window]
+height=805
+visiblePage=inputPage
+width=751

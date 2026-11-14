@@ -12,6 +12,9 @@ CachyOS (Arch) + Hyprland 0.56 masaüstü ayarları. Lavanta & altın tema
 | `config/swaync` | Bildirim servisi + sağdan açılan **Control Panel** |
 | `config/swayosd` | Ses / parlaklık / Caps Lock ekran göstergesi |
 | `config/rofi` | Uygulama başlatıcı |
+| `config/hyprwhspr` | Sesle yazma (dikte) ayarları |
+| `config/gtk-4.0` | Catppuccin temasını içe aktarır; Rnote renk kutuları için istisna (`~/.config/gtk-4.0/gtk.css`) |
+| `config/easyeffects` | Mikrofon efekt ayarları (`db/` → `~/.config/easyeffects/db/`) |
 | `config/kitty` | Terminal |
 | `config/fish` | Kabuk (`fish_variables` bilerek dahil değil) |
 | `config/qt6ct` | Qt uygulamalarının teması |
@@ -26,7 +29,7 @@ sağdan kayarak gelir. Bildirim varsa Waybar butonu altın renge döner.
 
 - Bilgisayar adının solundaki güneş (󰖙) güç butonu: panelin soluna mini bir
   güç menüsü açar (kilit, uyku, çıkış, yeniden başlat, kapat; son üçü onay ister)
-- Wi-Fi, Bluetooth, Rahatsız Etme, ekran görüntüsü, parlaklık
+- Wi-Fi, Bluetooth, Rahatsız Etme, oyun modu, parlaklık
 - **Mullvad** butonu: yeşil = bağlı, kırmızı = daemon açık / VPN kapalı,
   gri = daemon kapalı, altın = bağlanıyor. Yanındaki mini buton daemon'u açar/kapatır.
 - MSI Center (MControlCenter), Razer (Polychromatic)
@@ -50,6 +53,47 @@ sağdan kayarak gelir. Bildirim varsa Waybar butonu altın renge döner.
 Betikler: `config/swaync/scripts/` (`mullvad.sh`, `power.sh`, `toggle.sh`,
 `mcontrolcenter.sh`). `config/swaync/mullvad-state.css` `mullvad.sh`
 tarafından otomatik yazılır.
+
+## Oyun modu
+
+Control Panel'deki oyun kolu butonu (veya SUPER+SHIFT+G) Hyprland kısayollarını
+kapatır, CTRL+SPACE gibi tuşlar doğrudan oyuna gider; açıkken buton lavanta olur.
+`hyprland.lua`'daki `gaming` submap'i; ses / parlaklık / medya tuşları
+`submap_universal` ile çalışmaya devam eder. Betik: `hypr/scripts/gaming.sh`.
+
+## Tekerlek = sol / sağ tık
+
+`scroll-click on` / `scroll-click off` fare tekerleğini geçici olarak tıklamaya
+çevirir: yukarı = sol tık, aşağı = sağ tık. SUPER+SHIFT+C de aç / kapat yapar.
+Kısayollar config'e yazılmaz; Hyprland yeniden başlayınca ya da config yenilenince
+normale döner. Komut için bağlantı gerekir:
+`ln -s ~/.config/hypr/scripts/scroll-click.sh ~/.local/bin/scroll-click`
+
+## Dikte (hyprwhspr)
+
+SUPER+ALT+D kaydı başlatır, tekrar basınca konuşma imlecin olduğu yere yazılır;
+oyun modunda kapalıdır. Waybar'da ses modülünün yanındaki simge durumu gösterir
+(kayıtta kırmızı); sol tık kayıt, sağ tık servisi yeniden başlatır. Model yerel:
+faster-whisper `large-v3-turbo`, dil Türkçe (`config/hyprwhspr/config.json`).
+Waybar'a `hyprwhspr waybar` ile değil elle eklendi, çünkü o komut modülü sağ
+bölümün sonuna ekliyor ve `config.jsonc`'i yeniden yazıyor.
+
+```fish
+paru -S hyprwhspr
+hyprwhspr setup    # Whisper, large-v3-turbo; Waybar entegrasyonuna hayır
+```
+
+## Mikrofon efektleri (EasyEffects)
+
+EasyEffects açılışta penceresiz başlar (`hyprland.lua` autostart). Seiren'in
+sesi RNNoise → Gate → Compressor → Limiter zincirinden geçer; sistemin
+varsayılan mikrofonu **Easy Effects Source** (`pactl set-default-source
+easyeffects_source`, WirePlumber hatırlıyor). EasyEffects kapalıyken bu kaynak
+kaybolur ve uygulamalar efektsiz mikrofona düşer.
+
+```fish
+sudo pacman -S easyeffects lsp-plugins-lv2 calf
+```
 
 ## Kilit ve giriş ekranı
 
@@ -81,7 +125,7 @@ sudo pacman -S hyprland hyprlock hyprpolkitagent hyprshot uwsm \
 ```
 
 AUR'dan: `mullvad-vpn-bin`, `mcontrolcenter-git`, `polychromatic`,
-`bibata-cursor-theme-bin`.
+`bibata-cursor-theme-bin`, `hyprwhspr`.
 
 ## Kurulum
 

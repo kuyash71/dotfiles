@@ -9,7 +9,7 @@ alias ffetch="fastfetch"
 alias cls="printf '\033c'"
 
 function hypdot
-    subl ~/.config/hypr/hyprland.conf
+    subl ~/.config/hypr/hyprland.lua
 end
 
 alias vpn-on='sudo systemctl start mullvad-daemon && mullvad connect'
