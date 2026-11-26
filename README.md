@@ -15,6 +15,7 @@ CachyOS (Arch) + Hyprland 0.56 masaüstü ayarları. Lavanta & altın tema
 | `config/hyprwhspr` | Sesle yazma (dikte) ayarları |
 | `config/gtk-4.0` | Catppuccin temasını içe aktarır; Rnote renk kutuları için istisna (`~/.config/gtk-4.0/gtk.css`) |
 | `config/easyeffects` | Mikrofon efekt ayarları (`db/` → `~/.config/easyeffects/db/`) |
+| `config/wireplumber` | Bluetooth kulaklık Discord açılınca hands-free (HFP) moduna geçmesin |
 | `config/kitty` | Terminal |
 | `config/fish` | Kabuk (`fish_variables` bilerek dahil değil) |
 | `config/qt6ct` | Qt uygulamalarının teması |
@@ -69,6 +70,21 @@ Kısayollar config'e yazılmaz; Hyprland yeniden başlayınca ya da config yenil
 normale döner. Komut için bağlantı gerekir:
 `ln -s ~/.config/hypr/scripts/scroll-click.sh ~/.local/bin/scroll-click`
 
+## Makro: ALT + orta tık = W + D + sol tık, SHIFT + orta tık = sol tık
+
+`macro-hy on` / `macro-hy off` (argümansız: değiştir). Açıkken iki makro var,
+ikisi de oyun modunda çalışır ve aynı komboyla tekrar basınca bırakır:
+
+- ALT + orta tık: W + D + sol tık'ı basılı tutar
+- SHIFT + orta tık: sadece sol tık'ı basılı tutar
+
+Sol tıka kısayol bağlanmıyor: sanal sol tık basılıyken gerçek sol tık
+yutuluyor ve bırakmak imkansızlaşıyordu.
+Basılı tutma Hyprland kısayoluyla yapılamadığı için `hypr/scripts/macro-hy.py`
+sanal klavye + fare (python-evdev, `/dev/uinput`, `input` grubu) oluşturuyor.
+Kapatınca basılı tuş kalmaz. Komut için bağlantı gerekir:
+`ln -s ~/.config/hypr/scripts/macro-hy.sh ~/.local/bin/macro-hy`
+
 ## Dikte (hyprwhspr)
 
 SUPER+ALT+D kaydı başlatır, tekrar basınca konuşma imlecin olduğu yere yazılır;
@@ -90,6 +106,12 @@ sesi RNNoise → Gate → Compressor → Limiter zincirinden geçer; sistemin
 varsayılan mikrofonu **Easy Effects Source** (`pactl set-default-source
 easyeffects_source`, WirePlumber hatırlıyor). EasyEffects kapalıyken bu kaynak
 kaybolur ve uygulamalar efektsiz mikrofona düşer.
+
+Bluetooth kulaklık (soundcore Liberty 5) her zaman A2DP'de kalır:
+`config/wireplumber/.../51-bluetooth-no-autoswitch.conf` WirePlumber'ın
+"kayıt başlayınca kulaklığı HFP'ye al" davranışını kapatır (HFP'de ses 16 kHz
+mono'ya düşüyordu). Ardour'u **JACK** ile aç (pipewire-jack); ALSA modu Seiren'i
+PipeWire'dan alır, geri gelmezse `systemctl --user restart wireplumber`.
 
 ```fish
 sudo pacman -S easyeffects lsp-plugins-lv2 calf
